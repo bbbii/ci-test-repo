@@ -18,9 +18,8 @@ jobs:
           distribution: 'zulu'
           
       # CI Test를 위한 application.properties 생성
-      - name: create applications for CI Test
+      - name: create application for CI Test
         run: |
-          mkdir -p src/main/resources
           cd src/main/resources
           echo "${{ secrets.DEVELOPMENT_CI_CONFIG }}" >> application.properties
           
@@ -32,7 +31,7 @@ jobs:
           mysql database: 'jpa_test'
           mysql user: ${{ secrets.DB_USER }}
           mysql password: ${{ secrets.DB_PASSWORD }}
-          
+      
       # gradlew 실행 권한 부여
       - name: Grant Permission to gradlew
         run: chmod +x gradlew
@@ -53,4 +52,3 @@ jobs:
             -H 'Accept: application/vnd.github.v3+json' \
             -u ${{ secrets.GHCR_TOKEN }} \
             -d '{"event_type": "TEST_FINISH_TRIGGER", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
-            
